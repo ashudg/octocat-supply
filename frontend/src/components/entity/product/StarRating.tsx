@@ -2,15 +2,21 @@ import { useState } from 'react';
 
 interface StarRatingProps {
   productId: number;
+  productName: string;
   rating: number;
   onRate: (productId: number, rating: number) => void;
 }
 
-export default function StarRating({ productId, rating, onRate }: StarRatingProps) {
+export default function StarRating({ productId, productName, rating, onRate }: StarRatingProps) {
   const [hovered, setHovered] = useState<number>(0);
 
   return (
-    <div className="flex items-center space-x-1" aria-label={`Rate ${productId}`}>
+    <div
+      role="group"
+      aria-label={`Rate ${productName}`}
+      aria-live="polite"
+      className="flex items-center space-x-1"
+    >
       {[1, 2, 3, 4, 5].map((star) => {
         const isFilled = star <= (hovered || rating);
         return (

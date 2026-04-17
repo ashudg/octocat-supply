@@ -193,6 +193,7 @@ export default function Products() {
                   <div className="mb-2">
                     <StarRating
                       productId={product.productId}
+                      productName={product.name}
                       rating={ratings[product.productId] || 0}
                       onRate={handleRate}
                     />
