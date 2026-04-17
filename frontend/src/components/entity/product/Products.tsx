@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
+import StarRating from './StarRating';
 
 interface Product {
   productId: number;
@@ -23,6 +24,7 @@ const fetchProducts = async (): Promise<Product[]> => {
 
 export default function Products() {
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [ratings, setRatings] = useState<Record<number, number>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -59,6 +61,10 @@ export default function Products() {
         [productId]: 0,
       }));
     }
+  };
+
+  const handleRate = (productId: number, star: number) => {
+    setRatings((prev) => ({ ...prev, [productId]: star }));
   };
 
   const handleProductClick = (product: Product) => {
@@ -180,10 +186,17 @@ export default function Products() {
 
                   <div className="p-4 flex flex-col flex-grow">
                   <h3
-                    className={`text-xl font-semibold ${darkMode ? 'text-light' : 'text-gray-800'} mb-2 transition-colors duration-300`}
+                    className={`text-xl font-semibold ${darkMode ? 'text-light' : 'text-gray-800'} mb-1 transition-colors duration-300`}
                   >
                     {product.name}
                   </h3>
+                  <div className="mb-2">
+                    <StarRating
+                      productId={product.productId}
+                      rating={ratings[product.productId] || 0}
+                      onRate={handleRate}
+                    />
+                  </div>
                   <p
                     className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-4 flex-grow transition-colors duration-300`}
                   >
